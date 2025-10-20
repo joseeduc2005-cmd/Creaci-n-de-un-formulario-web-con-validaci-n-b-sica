@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Formulario con Validación Básica</title>
+  <style>
+    :root {
+      --bg:#0f172a; --card:#111827; --txt:#e5e7eb; --muted:#9ca3af;
+      --primary:#60a5fa; --danger:#f87171; --ok:#34d399; --border:#1f2937;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+      background:linear-gradient(180deg,#0b1020,#0f172a);color:var(--txt);
+      display:grid;place-items:center;min-height:100vh;padding:24px
+    }
+    .card{width:100%;max-width:720px;background:var(--card);border:1px solid var(--border);
+      border-radius:16px;padding:24px 22px;box-shadow:0 12px 24px rgba(0,0,0,.25)}
+    h1{margin:0 0 4px;font-size:1.4rem}
+    p.sub{color:var(--muted);margin:0 0 20px}
+    form{display:grid;gap:16px}
+    .row{display:grid;gap:8px}
+    label{font-weight:600}
+    input,select{
+      width:100%;padding:12px 14px;border-radius:10px;border:1px solid var(--border);
+      background:#0b1020;color:var(--txt);outline:none
+    }
+    input:focus,select:focus{border-color:var(--primary);box-shadow:0 0 0 3px rgba(96,165,250,.2)}
+    .error{color:var(--danger);font-size:.9rem;display:none;margin-top:4px}
+    [aria-invalid="true"]{border-color:var(--danger);box-shadow:0 0 0 3px rgba(248,113,113,.2)}
+    .actions{display:flex;gap:12px;align-items:center}
+    button{appearance:none;border:1px solid transparent;background:var(--primary);color:#0b1020;
+      font-weight:700;padding:12px 16px;border-radius:10px;cursor:pointer}
+    button.secondary{background:transparent;border-color:var(--border);color:var(--txt)}
+    .alert{display:none;margin-top:6px;padding:12px 14px;border-radius:10px;border:1px solid var(--border)}
+    .alert.ok{background:rgba(52,211,153,.08);border-color:#065f46;color:var(--ok)}
+    .alert.err{background:rgba(248,113,113,.08);border-color:#7f1d1d;color:var(--danger)}
+    footer{margin-top:22px;color:var(--muted);font-size:.9rem}
+    code{background:#0b1020;padding:2px 6px;border-radius:6px}
+
+    /* ✅ Estilo corregido del checkbox: texto justo al lado */
+    .terminos-box {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: #0b1020;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 10px 14px;
+      transition: 0.2s ease;
+      width: fit-content;
+    }
+    .terminos-box:hover {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 2px rgba(96,165,250,0.2);
+    }
+    .terminos-box input {
+      width: 18px;
+      height: 18px;
+      cursor: pointer;
+      accent-color: var(--primary);
+    }
+    .terminos-box label {
+      color: var(--txt);
+      font-weight: 600;
+      cursor: pointer;
+      margin: 0;
+    }
+    .terminos-box a {
+      color: var(--primary);
+      text-decoration: none;
+    }
+    .terminos-box a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>Registro de usuario</h1>
+    <p class="sub">Ejemplo de <strong>formulario con validación básica</strong> usando HTML + JavaScript.</p>
+
+    <form id="formRegistro" novalidate>
+      <div class="row">
+        <label for="nombre">Nombre completo</label>
+        <input id="nombre" name="nombre" type="text" placeholder="Tu nombre y apellido" required minlength="3" />
+        <div id="err-nombre" class="error">El nombre es obligatorio y debe tener al menos 3 caracteres.</div>
+      </div>
+
+      <div class="row">
+        <label for="email">Correo electrónico</label>
+        <input id="email" name="email" type="email" placeholder="tucorreo@dominio.com" required />
+        <div id="err-email" class="error">Ingresa un email válido.</div>
+      </div>
+
+      <div class="row">
+        <label for="password">Contraseña</label>
+        <input id="password" name="password" type="password" placeholder="Mínimo 6 caracteres" required minlength="6" />
+        <div id="err-password" class="error">La contraseña debe tener mínimo 6 caracteres.</div>
+      </div>
+
+      <div class="row">
+        <label for="password2">Confirmar contraseña</label>
+        <input id="password2" name="password2" type="password" placeholder="Repite tu contraseña" required minlength="6" />
+        <div id="err-password2" class="error">Las contraseñas deben coincidir.</div>
+      </div>
+
+      <div class="row">
+        <label for="pais">País</label>
+        <select id="pais" name="pais" required>
+          <option value="">Seleccione una opción</option>
+          <option value="ec">Ecuador</option>
+          <option value="pe">Perú</option>
+          <option value="co">Colombia</option>
+          <option value="mx">México</option>
+          <option value="ar">Argentina</option>
+        </select>
+        <div id="err-pais" class="error">Selecciona un país.</div>
+      </div>
+
+      <!-- ✅ Bloque de términos alineado correctamente -->
+      <div class="row">
+        <div class="terminos-box">
+          <input type="checkbox" id="terminos" name="terminos" required />
+          <label for="terminos">Acepto los <a href="#" target="_blank">términos y condiciones</a></label>
+        </div>
+        <div id="err-terminos" class="error">Debes aceptar los términos.</div>
+      </div>
+
+      <div class="actions">
+        <button type="submit">Crear cuenta</button>
+        <button type="reset" class="secondary">Limpiar</button>
+      </div>
+
+      <div id="alert-ok" class="alert ok">✔ Registro correcto. ¡Formulario enviado!</div>
+      <div id="alert-err" class="alert err">✖ Revisa los campos marcados en rojo.</div>
+    </form>
+
+    <footer>
+      <p>Deja campos vacíos o con errores para ver los mensajes de validación en acción.</p>
+    </footer>
+  </div>
+
+  <script>
+    function showError(input, err, msg){ input.setAttribute('aria-invalid','true'); err.textContent=msg; err.style.display='block'; }
+    function clearError(input, err){ input.removeAttribute('aria-invalid'); err.style.display='none'; }
+
+    const errNombre = document.getElementById('err-nombre');
+    const errEmail = document.getElementById('err-email');
+    const errPassword = document.getElementById('err-password');
+    const errPassword2 = document.getElementById('err-password2');
+    const errPais = document.getElementById('err-pais');
+    const errTerminos = document.getElementById('err-terminos');
+
+    function validateNombre(){ const i=nombre, e=errNombre; if(i.value.trim().length<3){showError(i,e,'El nombre debe tener al menos 3 caracteres.');return false;} clearError(i,e);return true; }
+    function validateEmail(){ const i=email, e=errEmail; const re=/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/; if(!re.test(i.value)){showError(i,e,'Email no válido.');return false;} clearError(i,e);return true; }
+    function validatePassword(){ const i=password, e=errPassword; if(i.value.length<6){showError(i,e,'Contraseña muy corta.');return false;} clearError(i,e);return true; }
+    function validatePassword2(){ const e=errPassword2; if(password.value!==password2.value||password2.value.length<6){showError(password2,e,'Las contraseñas no coinciden.');return false;} clearError(password2,e);return true; }
+    function validatePais(){ const i=pais, e=errPais; if(!i.value){showError(i,e,'Selecciona un país.');return false;} clearError(i,e);return true; }
+    function validateTerminos(){ const i=terminos, e=errTerminos; if(!i.checked){showError(i,e,'Debes aceptar los términos.');return false;} clearError(i,e);return true; }
+
+    function validateAll(){ return [validateNombre(),validateEmail(),validatePassword(),validatePassword2(),validatePais(),validateTerminos()].every(Boolean); }
+
+    const form = document.getElementById('formRegistro');
+    form.addEventListener('submit', e=>{
+      e.preventDefault();
+      const ok = validateAll();
+      document.getElementById('alert-ok').style.display = ok ? 'block':'none';
+      document.getElementById('alert-err').style.display = ok ? 'none':'block';
+      if (ok) form.reset();
+    });
+
+    nombre.addEventListener('blur', validateNombre);
+    email.addEventListener('blur', validateEmail);
+    password.addEventListener('blur', validatePassword);
+    password2.addEventListener('blur', validatePassword2);
+    pais.addEventListener('blur', validatePais);
+    terminos.addEventListener('change', validateTerminos);
+  </script>
+</body>
+</html>
